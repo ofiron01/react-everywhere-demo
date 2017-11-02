@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {
   View,
-  Dimensions
+  ScrollView,
+  Dimensions,
+  Platform
 } from 'react-native';
 
 const QuestionTitle = styled.Text`
@@ -20,8 +22,22 @@ export default class ChoiceQuestion extends React.Component {
 
   constructor(props) {
     super(props);
+
+    if (Platform.OS === 'web') {
+      window.addEventListener('resize', (e)=> {
+        setTimeout(() => {
+          this.setState({
+              width: Dimensions.get('window').width
+          })
+        }, 200);
+
+      });
+    }
+
+
     this.state = {
-      selectedAnswer: props.selectedAnswer || null
+      selectedAnswer: props.selectedAnswer || null,
+      width: Dimensions.get('window').width
     };
   }
 
@@ -31,27 +47,28 @@ export default class ChoiceQuestion extends React.Component {
 
   render() {
     let {title, children} = this.props;
-    let {selectedAnswer} = this.state;
-    const width = Dimensions.get('window').width; //full width
+    let {selectedAnswer, width} = this.state;
+    this.width = Dimensions.get('window').width; //full width
 
     return (
      <View style={{
-       flex: 0.2
+       flex: 1
      }}>
-       <QuestionTitle width={width}>{title}</QuestionTitle>
-       <View>
-         {
-           React.Children.map(
-             children,
-             (child, i) => React.cloneElement(child, {
-               index: i,
-               onSelect: (choice) => this.onSelect(choice),
-               selected: selectedAnswer === i
-             })
-           )
-         }
-       </View>
-     </View>
+      <QuestionTitle width={width}>{title}</QuestionTitle>
+        <ScrollView
+          style={{flex:1, height:80}}>
+          {
+            React.Children.map(
+              children,
+              (child, i) => React.cloneElement(child, {
+                index: i,
+                onSelect: (choice) => this.onSelect(choice),
+                selected: selectedAnswer === i
+              })
+            )
+          }
+        </ScrollView>
+      </View>
    );
   }
 }
