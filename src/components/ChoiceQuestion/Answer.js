@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {
   View,
-  Image,
   TouchableHighlight
 } from 'react-native';
 
@@ -19,7 +18,7 @@ const AnswerImage = styled.Image`
   height: 32;
   border-width: 1;
   border-color: #408EA7;
-  margin-right: 10;
+  margin-right: 10px;
 `;
 
 const AnswerText = styled.Text`
@@ -33,8 +32,8 @@ const AnswerCheckbox = styled.Text`
   background-color: #ffffff;
   border-width: 2px;
   border-color: #e37c44;
-width: 16px;
-height: 16px;
+  width: 16px;
+  height: 16px;
   border-style: solid;
   border-radius: 20;
   background-color: ${
